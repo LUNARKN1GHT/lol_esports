@@ -1,0 +1,21 @@
+# Core
+pandas>=2.2
+numpy>=1.26
+openpyxl>=3.1          # 读 Oracle's Elixir 的 xlsx（如下的是 xlsx 格式）
+
+# Visualization
+matplotlib>=3.8
+seaborn>=0.13
+plotly>=5.20           # 交互图，报告里贴静态图也方便
+
+# Notebook
+jupyter>=1.0
+ipykernel>=6.29
+
+# Modeling (按需用)
+scikit-learn>=1.4
+scipy>=1.12
+
+# 工具
+tqdm>=4.66
+requests>=2.31         # 如果之后想脚本下载数据
