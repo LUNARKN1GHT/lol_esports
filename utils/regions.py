@@ -4,7 +4,9 @@ import pandas as pd
 
 MAJOR_REGION_MAP = {
     "LPL": "LPL",
+    "DCup": "LPL",  # Demacia Cup, 中国国内杯赛
     "LCK": "LCK",
+    "KeSPA": "LCK",  # KeSPA Cup, 韩国国内杯赛
     "LCS": "LCS",
     "NA LCS": "LCS",
     "LEC": "LEC",
@@ -23,7 +25,16 @@ ACADEMY = frozenset(
 )
 
 INTERNATIONAL = frozenset(
-    {"WLDs", "LCKC", "NACL", "LCSA", "LFL2", "CBLOLA", "LSPL", "EBLPA", "GLLPA", "TCS"}
+    {
+        "WLDs",  # World Championship
+        "MSI",  # Mid-Season Invitational
+        "MSC",  # Mid-Season Cup (2020)
+        "EWC",  # Esports World Cup
+        "IWCI",  # International Wildcard
+        "ASI",  # Asian Games / All-Star
+        "Asia Master",
+        "Riot",  # Riot 直接组织的特殊赛事
+    }
 )
 
 REGION_ORDER = ["LPL", "LCK", "LCS", "LEC", "Others", "International", "Academy"]
