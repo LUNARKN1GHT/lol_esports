@@ -36,5 +36,8 @@ def filter_valid_gamelength(df: pd.DataFrame, min_seconds: int = 900) -> pd.Data
 
 
 def standard_clean(df: pd.DataFrame, min_seconds: int = 900) -> pd.DataFrame:
-    """Standard data processing pipeline"""
-    return filter_valid_gamelength(filter_complete(df), min_seconds=min_seconds)
+    """Standard data processing pipeline
+
+    Only filter invalid time
+    """
+    return filter_valid_gamelength(df, min_seconds=min_seconds)
