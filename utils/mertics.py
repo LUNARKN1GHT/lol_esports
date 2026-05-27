@@ -36,11 +36,27 @@ def aggression(df: pd.DataFrame) -> pd.DataFrame:
     )
 
     snap = (
-        require_snapshots(base)
-        .groupby(GROUP_KEYS)["golddiffat15"]
-        .mean()
-        .rename("golddiff15_avg")
+        require_snapshots(base).groupby(GROUP_KEYS)["golddiffat15"].mean().rename("golddiff15_avg")
     )
     out = out.join(snap)
 
+    return out.reset_index()
+
+
+def early_dominance(df: pd.DataFrame) -> pd.DataFrame:
+    """Dominance in early 10 mins: mean CSD@10 / golddiff@10 / xpdiff@10
+
+    Need snapshot data.
+    """
+    base = _team_season_base(df).pipe(require_snapshots)
+
+    grouped = base.groupby(GROUP_KEYS)
+    out = pd.DataFrame(
+        {
+            "games_snap": grouped.size(),
+            "csd10_avg": grouped["csdiffat10"].mean(),
+            "golddiff10_avg": grouped["golddiffat10"].mean(),
+            "xpdiff10_avg": grouped["xpdiffat10"].mean(),
+        }
+    )
     return out.reset_index()
