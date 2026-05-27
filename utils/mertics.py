@@ -133,3 +133,14 @@ def build_playstyle_table(df: pd.DataFrame) -> pd.DataFrame:
     for other in [early, vis, obj]:
         merged = merged.merge(other, on=GROUP_KEYS, how="outer")
     return merged
+
+
+def parse_patch(s):
+    """'10.23' -> (10, 23)；NaN -> (0, 0)."""
+    if pd.isna(s):
+        return (0, 0)
+    try:
+        a, b = str(s).split(".")
+        return (int(a), int(b))
+    except (ValueError, AttributeError):
+        return (0, 0)
