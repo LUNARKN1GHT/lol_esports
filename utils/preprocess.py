@@ -41,3 +41,12 @@ def standard_clean(df: pd.DataFrame, min_seconds: int = 900) -> pd.DataFrame:
     Only filter invalid time
     """
     return filter_valid_gamelength(df, min_seconds=min_seconds)
+
+
+def require_snapshots(df: pd.DataFrame) -> pd.DataFrame:
+    """仅保留 datacompleteness == 'complete' 的比赛。
+
+    用于依赖时间快照字段（goldat10 / csat15 / xpat20 等）的分析。
+    会显著减少 LPL 2016-2017 和 2022+ 的样本量。
+    """
+    return filter_complete(df)
