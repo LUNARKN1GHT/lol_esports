@@ -92,3 +92,31 @@ def vision_control(df: pd.DataFrame) -> pd.DataFrame:
         }
     )
     return out.reset_index()
+
+
+def objective_focus(df: pd.DataFrame) -> pd.DataFrame:
+    """Objective control metrics per (team, year, region).
+
+    主指标用 count 字段（dragons / barons / heralds），LPL 全年覆盖完整。
+    First-X rate 字段在 LPL 2016-17 和 2022+ 部分缺失（采集口径），会有 NaN。
+    """
+    from .preprocess import get_team_rows, standard_clean
+    from .regions import add_region
+
+    teams = standard_clean(df).pipe(get_team_rows).pipe(add_region)
+
+    grouped = teams.groupby(GROUP_KEYS)
+    out = pd.DataFrame(
+        {
+            "games_obj": grouped.size(),
+            # 数量：每场该队拿到多少
+            "dragons_avg": grouped["dragons"].mean(),
+            "barons_avg": grouped["barons"].mean(),
+            "heralds_avg": grouped["heralds"].mean(),
+            # 首拿率：mean(0/1) = 该队拿到首条 X 的比例
+            "first_dragon_rate": grouped["firstdragon"].mean(),
+            "first_baron_rate": grouped["firstbaron"].mean(),
+            "first_herald_rate": grouped["firstherald"].mean(),
+        }
+    )
+    return out.reset_index()
