@@ -120,3 +120,16 @@ def objective_focus(df: pd.DataFrame) -> pd.DataFrame:
         }
     )
     return out.reset_index()
+
+
+def build_playstyle_table(df: pd.DataFrame) -> pd.DataFrame:
+    """合并四个维度的指标到一张 (team, year, region) 长表。"""
+    agg = aggression(df)
+    early = early_dominance(df)
+    vis = vision_control(df)
+    obj = objective_focus(df)
+
+    merged = agg
+    for other in [early, vis, obj]:
+        merged = merged.merge(other, on=GROUP_KEYS, how="outer")
+    return merged
