@@ -60,3 +60,35 @@ def early_dominance(df: pd.DataFrame) -> pd.DataFrame:
         }
     )
     return out.reset_index()
+
+
+def vision_control(df: pd.DataFrame) -> pd.DataFrame:
+    """Vision metrics per (team, year, region).
+
+    数据策略：player 行聚合到 team-game（sum 5 个选手），
+    再对 team-season 取均值 → 平均每场该队总视野投入。
+
+    覆盖：wardsplaced / wardskilled / controlwardsbought 字段 LPL
+    全年（2016+）覆盖良好；visionscore 在 LPL 2016-17 缺失。
+    """
+    from .preprocess import get_player_rows, standard_clean
+    from .regions import add_region
+
+    players = standard_clean(df).pipe(get_player_rows).pipe(add_region)
+    vision_cols = ["visionscore", "wardsplaced", "wardskilled", "controlwardsbought"]
+
+    team_game = players.groupby(["gameid", "teamname", "year", "region"], as_index=False)[
+        vision_cols
+    ].sum(min_count=1)
+
+    grouped = team_game.groupby(GROUP_KEYS)
+    out = pd.DataFrame(
+        {
+            "games_vision": grouped.size(),
+            "vs_avg": grouped["visionscore"].mean(),
+            "wards_placed_avg": grouped["wardsplaced"].mean(),
+            "wards_killed_avg": grouped["wardskilled"].mean(),
+            "ctrl_wards_avg": grouped["controlwardsbought"].mean(),
+        }
+    )
+    return out.reset_index()
