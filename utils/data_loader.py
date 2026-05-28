@@ -30,7 +30,14 @@ def load_all_seasons(use_cache: bool = True) -> pd.DataFrame:
 
     frames = []
     for year in tqdm(YEAR_RANGE, desc="Loading seasons"):
-        df = pd.read_csv(_csv_path(year=year), low_memory=False, parse_dates=["date"])
+        df = pd.read_csv(
+            _csv_path(year=year),
+            low_memory=False,
+            parse_dates=["date"],
+            # patch 必须读成字符串：CSV 原始格式 "X.YY"（如 "13.10"），
+            # 自动解析为 float 会丢失末尾零，导致 "13.10" → 13.1 与真"13.1"无法区分
+            dtype={"patch": "string"},
+        )
         df["year"] = year
         frames.append(df)
 
