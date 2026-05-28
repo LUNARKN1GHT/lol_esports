@@ -25,10 +25,10 @@ def kw_test(df: pd.DataFrame, group_col: str, metric_col: str, groups=None) -> d
             sizes[g] = len(s)
     if len(samples) < 2:
         return None
-    H, p = stats.kruskal(*samples)
+    h_stat, p = stats.kruskal(*samples)
     n_total = sum(sizes.values())
-    eps2 = H / (n_total - 1)
-    return {"H": H, "p": p, "eps2": eps2, **{f"n_{g}": v for g, v in sizes.items()}}
+    eps2 = h_stat / (n_total - 1)
+    return {"H": h_stat, "p": p, "eps2": eps2, **{f"n_{g}": v for g, v in sizes.items()}}
 
 
 def kw_table(df: pd.DataFrame, group_col: str, metrics: list[str], groups=None) -> pd.DataFrame:

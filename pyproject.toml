@@ -22,3 +22,9 @@ ignore = [
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[tool.pyright]
+reportMissingTypeStubs = "none"
+
+[tool.mypy]
+ignore_missing_imports = true
